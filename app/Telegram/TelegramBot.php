@@ -2,6 +2,7 @@
 
 namespace Telegram;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Telegram\Core\TelegramObject;
 use Telegram\Customs\CustomResponse;
@@ -31,6 +32,12 @@ class TelegramBot
     }
 
     public function getUpdates(): UpdateArray
+    {
+        $response = $this->callArray('getUpdates');
+        return UpdateArray::fromResponse($response);
+    }
+
+    public function handleWebhook(Request $request): UpdateArray
     {
         $response = $this->callArray('getUpdates');
         return UpdateArray::fromResponse($response);
