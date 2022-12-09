@@ -3,6 +3,7 @@
 namespace Telegram\Core;
 
 use Telegram\Customs\CustomResponse;
+use Telegram\Objects\UpdateArray;
 
 abstract class TelegramObject
 {
@@ -13,6 +14,27 @@ abstract class TelegramObject
         $obj = new $class_name();
         foreach (get_class_vars(static::class) as $property => $value) {
             $obj->$property = $response->get($property);
+        }
+
+        return $obj;
+    }
+
+    static public function fromArray(array $response): self
+    {
+        $class_name = static::class;
+
+        $obj = new $class_name();
+        foreach (get_class_vars(static::class) as $property => $value) {
+
+            $data = null;
+            if($obj->$property instanceof TelegramObject){
+                $class = gettype($obj->$property);
+                $data = $class::fromResponse($response);
+            }
+            else{
+                $data = $response[$property];
+            }
+            $obj->$property = $data;
         }
 
         return $obj;

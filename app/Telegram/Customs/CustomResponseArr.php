@@ -4,12 +4,12 @@ namespace Telegram\Customs;
 
 use \Illuminate\Http\Client\Response;
 
-class CustomResponse
+class CustomResponseArr
 {
     protected int $status;
     protected array $headers;
     protected bool $ok;
-    protected array $result;
+    protected array $results;
 
     public function __construct(Response $response)
     {
@@ -18,17 +18,12 @@ class CustomResponse
         $this->status = $response->status();
         $this->headers = $response->headers();
         $this->ok = ($data['ok'] == 'true');
-        $this->result = $data['result'];
+        $this->results = $data['result'];
     }
 
-    public function get(string $field)
+    public function getResultsArr()
     {
-        return $this->result[$field] ?? null;
-    }
-
-    public function getResultArr()
-    {
-        return $this->result;
+        return $this->results;
     }
 
 }

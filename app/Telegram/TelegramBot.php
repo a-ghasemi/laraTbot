@@ -5,7 +5,9 @@ namespace Telegram;
 use Illuminate\Support\Facades\Http;
 use Telegram\Core\TelegramObject;
 use Telegram\Customs\CustomResponse;
+use Telegram\Customs\CustomResponseArr;
 use Telegram\Objects\Update;
+use Telegram\Objects\UpdateArray;
 use Telegram\Objects\User;
 
 class TelegramBot
@@ -28,10 +30,10 @@ class TelegramBot
         return User::fromResponse($response);
     }
 
-    public function getUpdates(): TelegramObject
+    public function getUpdates(): UpdateArray
     {
-        $response = $this->call('getUpdates');
-        return Update::fromResponse($response);
+        $response = $this->callArray('getUpdates');
+        return UpdateArray::fromResponse($response);
     }
 
     private function makeUrl(): string
@@ -48,6 +50,16 @@ class TelegramBot
     }
 
     private function call($telegram_method_name, $params = [], $http_method = 'post'): CustomResponse
+    {
+        $url = $this->url . $telegram_method_name;
+        if($this->debug_url) {
+            return dd($url);
+        }
+        $response = Http::send($http_method, $url, $params);
+        return (new CustomResponse($response));
+    }
+
+    private function callArray($telegram_method_name, $params = [], $http_method = 'post'): CustomResponse
     {
         $url = $this->url . $telegram_method_name;
         if($this->debug_url) {

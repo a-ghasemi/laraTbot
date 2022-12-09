@@ -1,18 +1,19 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Telegram\TelegramBot;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+Route::get('/',function (){
+    return view('panel');
+})->name('panel');
 
-Route::get('/', function () {
-    return view('welcome');
+Route::post('panel/{method?}',function (\Illuminate\Http\Request $request, $method = null){
+    $this->tbot = new TelegramBot();
+    $params = $request->get('params',[]);
+    $response = $this->tbot->$method(...$params);
+    return view('result',['result' => $response->toString()]);
+})->name('bot_method');
+
+Route::get('phpinf/124', function (){
+    return phpinfo();
 });
