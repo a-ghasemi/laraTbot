@@ -3,6 +3,7 @@
 namespace Telegram\Customs;
 
 use \Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Log;
 
 class CustomResponse
 {
@@ -11,14 +12,26 @@ class CustomResponse
     protected bool $ok;
     protected array $result;
 
+    # telegram error
+    protected string $description;
+    protected int $error_code;
+
     public function __construct(Response $response)
     {
-        $data = json_decode($response->body(), true);
+        $data = $response->json(true);
 
+        Log::info('response',$data ?? []);
         $this->status = $response->status();
         $this->headers = $response->headers();
         $this->ok = ($data['ok'] == 'true');
-        $this->result = $data['result'];
+
+        if($this->status == 200){ // success request to telegram
+            if(!$this->ok){ // telegram error feedback
+                $this->description = $data['description'];
+                $this->error_code = $data['error_code'];
+            }
+
+        }
     }
 
     public function get(string $field)

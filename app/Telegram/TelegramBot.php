@@ -5,6 +5,8 @@ namespace Telegram;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Telegram\Commands\Command;
 use Telegram\Core\TelegramObject;
 use Telegram\Customs\CustomResponse;
 use Telegram\Customs\CustomResponseArr;
@@ -17,6 +19,9 @@ class TelegramBot
 {
     protected $url;
     protected $debug_url;
+    public Command $commands;
+    public string $chat_id;
+
 
     /**
      * @throws \Exception
@@ -25,6 +30,7 @@ class TelegramBot
     {
         $this->url = $this->makeUrl();
         $this->debug_url = config('tbot.debug.url_call');
+        $this->commands = new Command($this);
     }
 
     public function getMe(): TelegramObject
@@ -39,13 +45,11 @@ class TelegramBot
         return UpdateArray::fromResponse($response);
     }
 
-    public function sendReply(string $content)
-    {
-
-    }
-
     public function handleWebhook(Request $request): Response
     {
+        $request_arr = $request->all();
+        $this->chat_id = $request_arr['message']['chat']['id'];
+
         $handler = new TelegramBotHandler($this, $request);
         $handler->run();
         return $handler->getResponse();
@@ -64,13 +68,13 @@ class TelegramBot
         return config('tbot.telegram_api_path') . config('tbot.token') . '/';
     }
 
-    private function call($telegram_method_name, $params = [], $http_method = 'post'): CustomResponse
+    public function call($telegram_method_name, $params = [], $http_method = 'post'): CustomResponse
     {
         $url = $this->url . $telegram_method_name;
         if($this->debug_url) {
             return dd($url);
         }
-        $response = Http::send($http_method, $url, $params);
+        $response = Http::post($url, $params);
         return (new CustomResponse($response));
     }
 

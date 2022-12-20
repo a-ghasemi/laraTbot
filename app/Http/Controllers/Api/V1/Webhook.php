@@ -11,7 +11,15 @@ class Webhook extends Controller
 {
     public function index(Request $request, string $token)
     {
-        abort_if(config('tbot.webhook_check_token') != $token,404);
+        abort_if(config('tbot.webhook_check_token.main') != $token,404);
+
+        $tbot = new TelegramBot();
+        return $tbot->handleWebhook($request);
+    }
+
+    public function debug(Request $request, string $token)
+    {
+        abort_if(config('tbot.webhook_check_token.debug') != $token,404);
 
         $tbot = new TelegramBot();
         return $tbot->handleWebhook($request);

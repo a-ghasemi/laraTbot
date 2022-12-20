@@ -19,7 +19,7 @@ class TelegramBotHandler
 
     public function run(): void
     {
-        $this->bot->sendReply('Hello!');
+        $this->bot->commands->sendReply('Hello!');
         $this->response = response('done',200);
     }
 
