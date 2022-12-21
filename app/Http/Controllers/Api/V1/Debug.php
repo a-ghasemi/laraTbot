@@ -11,10 +11,10 @@ use Telegram\TelegramBot;
 
 class Debug extends Controller
 {
-    public function debug(Request $request, string $token)
+    public function debug(Request $request, string $token, string $method)
     {
         abort_if(config('tbot.debug.token') != $token,404);
 
-        ServerSentTelegramRequest::dispatch($request);
+        ServerSentTelegramRequest::dispatch($method, $request);
     }
 }

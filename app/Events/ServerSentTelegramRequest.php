@@ -16,15 +16,17 @@ class ServerSentTelegramRequest implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $request;
+    public $method;
 
-    public function __construct(Request $request)
+    public function __construct(string $method,Request $request)
     {
         $this->request = $request;
+        $this->method = $method;
     }
 
     public function broadcastOn()
     {
-        return new PrivateChannel('my-channel');
+        return new Channel('my-channel');
     }
 
     public function broadcastAs()
