@@ -15,7 +15,7 @@ Route::group([
         return "PONG!";
     })->name('test.ping');
 
-    Route::post('webhook/{token}', "\App\Http\Controllers\Api\V1\Webhook@index")->name('tbot.webhook.index');
-    Route::post('webhook/{token}/debug', "\App\Http\Controllers\Api\V1\Webhook@debug")->name('tbot.webhook.debug');
+    Route::post('webhook/{token}', "\App\Http\Controllers\Api\V1\Webhook@index")->name('tbot.webhook');
+    Route::post('telegram/{token}/debug', "\App\Http\Controllers\Api\V1\Debug@index")->name('tbot.send.debug');
 });
 

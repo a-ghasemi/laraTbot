@@ -7,14 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Telegram\TelegramBot;
 
-class Webhook extends Controller
+class Debug extends Controller
 {
-    public function index(Request $request, string $token)
+    public function debug(Request $request, string $token)
     {
-        abort_if(config('tbot.webhook.token') != $token,404);
+        abort_if(config('tbot.debug.token') != $token,404);
 
         $tbot = new TelegramBot();
         return $tbot->handleWebhook($request);
     }
-
 }
