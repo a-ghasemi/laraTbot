@@ -40,6 +40,11 @@ class TelegramBot
         return User::fromResponse($response);
     }
 
+    public function setWebhook(string $url): CustomResponse
+    {
+        return $this->call('setWebhook', ['url' => $url]);
+    }
+
     public function getUpdates(): UpdateArray
     {
         $response = $this->callArray('getUpdates');
@@ -77,7 +82,7 @@ class TelegramBot
     {
         $url = $this->url . $telegram_method_name;
         if ($this->debug_url) {
-            $url = route('tbot.send.debug', [
+            $url = route('v1.tbot.send.debug', [
                 'method' => $telegram_method_name,
                 'token'  => config('tbot.debug.token'),
             ]);
