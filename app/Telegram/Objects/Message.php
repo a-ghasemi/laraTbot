@@ -2,7 +2,9 @@
 
 namespace Telegram\Objects;
 
-class Message
+use Telegram\Core\TelegramObject;
+
+class Message extends TelegramObject
 {
     protected int $message_id;                      # Unique message identifier inside this chat
     protected int $message_thread_id;               # Optional. Unique identifier of a message thread to which the message belongs; for supergroups only

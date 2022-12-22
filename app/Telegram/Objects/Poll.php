@@ -6,7 +6,9 @@ namespace Telegram\Objects;
  * based on: https://core.telegram.org/bots/api#poll
  */
 
-class Poll
+use Telegram\Core\TelegramObject;
+
+class Poll extends TelegramObject
 {
     protected string $id;                   # Unique poll identifier
     protected string $question;                 # Poll question, 1-300 characters

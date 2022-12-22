@@ -6,7 +6,9 @@ namespace Telegram\Objects;
  * based on: https://core.telegram.org/bots/api#chatjoinrequest
  */
 
-class ChatJoinRequest
+use Telegram\Core\TelegramObject;
+
+class ChatJoinRequest extends TelegramObject
 {
     protected Chat $chat;                               # Chat to which the request was sent
     protected User $from;                               # User that sent the join request

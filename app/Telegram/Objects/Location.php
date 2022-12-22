@@ -6,7 +6,9 @@ namespace Telegram\Objects;
  * based on: https://core.telegram.org/bots/api#location
  */
 
-class Location
+use Telegram\Core\TelegramObject;
+
+class Location extends TelegramObject
 {
     protected float $longitude;                         # Longitude as defined by sender
     protected float $latitude;                          # Latitude as defined by sender

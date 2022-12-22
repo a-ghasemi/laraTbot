@@ -6,7 +6,9 @@ namespace Telegram\Objects;
  * based on: https://core.telegram.org/bots/api#chatmemberupdated
  */
 
-class ChatMemberUpdated
+use Telegram\Core\TelegramObject;
+
+class ChatMemberUpdated extends TelegramObject
 {
     protected Chat $chat;                           # Chat the user belongs to
     protected User $from;                           # Performer of the action, which resulted in the change

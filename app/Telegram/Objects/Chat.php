@@ -6,7 +6,9 @@ namespace Telegram\Objects;
  * based on: https://core.telegram.org/bots/api#chat
  */
 
-class Chat
+use Telegram\Core\TelegramObject;
+
+class Chat extends TelegramObject
 {
     protected int $id;        # Unique identifier for this chat. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit int or double-precision float type are safe for storing this identifier.
     protected string $type;        # Type of chat, can be either “private”, “group”, “supergroup” or “channel”

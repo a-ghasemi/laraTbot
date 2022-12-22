@@ -2,7 +2,9 @@
 
 namespace Telegram\Objects;
 
-class ChosenInlineResult
+use Telegram\Core\TelegramObject;
+
+class ChosenInlineResult extends TelegramObject
 {
     protected string $result_id;            # The unique identifier for the result that was chosen
     protected User $from;                   # The user that chose the result

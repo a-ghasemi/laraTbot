@@ -7,6 +7,9 @@ use Telegram\Objects\UpdateArray;
 
 abstract class TelegramObject
 {
+    /*
+     * Creates Object from Telegram response
+     */
     static public function fromResponse(CustomResponse $response): self
     {
         $class_name = static::class;
@@ -19,6 +22,10 @@ abstract class TelegramObject
         return $obj;
     }
 
+    /*
+     * Creates Array of Object from Telegram response
+     * e.g. response of getUpdates
+     */
     static public function fromArray(array $response): self
     {
         $class_name = static::class;
@@ -40,6 +47,10 @@ abstract class TelegramObject
         return $obj;
     }
 
+    /*
+     * Makes a pretty view of Object in the response of string request
+     * e.g. in the logs
+     */
     public function toString(): string
     {
         $return = [];
@@ -57,6 +68,9 @@ abstract class TelegramObject
         return implode("\n", $return);
     }
 
+    /*
+     * Uses to prettify string view
+     */
     private function centerString(string $str, int $len): string
     {
         return str_repeat(' ', max(0, $len - intdiv(strlen($str), 2))) . $str;

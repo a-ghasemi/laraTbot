@@ -6,7 +6,9 @@ namespace Telegram\Objects;
  * based on: https://core.telegram.org/bots/api#callbackquery
  */
 
-class CallbackQuery
+use Telegram\Core\TelegramObject;
+
+class CallbackQuery extends TelegramObject
 {
     protected string $id;                       # Unique identifier for this query
     protected User $from;                       # Sender

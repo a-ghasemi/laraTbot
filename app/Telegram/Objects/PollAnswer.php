@@ -6,7 +6,9 @@ namespace Telegram\Objects;
  * based on: https://core.telegram.org/bots/api#pollanswer
  */
 
-class PollAnswer
+use Telegram\Core\TelegramObject;
+
+class PollAnswer extends TelegramObject
 {
     protected string $poll_id;          # Unique poll identifier
     protected User $user;               # The user, who changed the answer to the poll

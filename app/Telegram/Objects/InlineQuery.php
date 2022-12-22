@@ -2,7 +2,9 @@
 
 namespace Telegram\Objects;
 
-class InlineQuery
+use Telegram\Core\TelegramObject;
+
+class InlineQuery extends TelegramObject
 {
     protected string $id;               # Unique identifier for this query
     protected User $from;               # Sender

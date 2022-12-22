@@ -6,7 +6,9 @@ namespace Telegram\Objects;
  * based on: https://core.telegram.org/bots/api#shippingaddress
  */
 
-class ShippingAddress
+use Telegram\Core\TelegramObject;
+
+class ShippingAddress extends TelegramObject
 {
     protected string $country_code;                 # Two-letter ISO 3166-1 alpha-2 country code
     protected string $state;                        # State, if applicable

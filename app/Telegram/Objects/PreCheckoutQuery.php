@@ -6,7 +6,9 @@ namespace Telegram\Objects;
  * based on: https://core.telegram.org/bots/api#precheckoutquery
  */
 
-class PreCheckoutQuery
+use Telegram\Core\TelegramObject;
+
+class PreCheckoutQuery extends TelegramObject
 {
     protected string $id;                       # Unique query identifier
     protected User $from;                       # User who sent the query

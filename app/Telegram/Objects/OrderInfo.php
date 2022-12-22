@@ -6,7 +6,9 @@ namespace Telegram\Objects;
  * based on: https://core.telegram.org/bots/api#orderinfo
  */
 
-class OrderInfo
+use Telegram\Core\TelegramObject;
+
+class OrderInfo extends TelegramObject
 {
     protected string $name;                             # Optional. User name
     protected string $phone_number;                     # Optional. User's phone number
