@@ -20,6 +20,6 @@ class Debug extends Controller
         Log::debug($method, $request->all());
         ServerSentTelegramRequest::dispatch($method, $request->all());
 
-        return;
+        return response('debug trigger', 201);
     }
 }

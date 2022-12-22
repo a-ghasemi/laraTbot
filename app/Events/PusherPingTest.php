@@ -6,6 +6,7 @@ use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -13,7 +14,7 @@ use Illuminate\Support\Str;
 
 class PusherPingTest implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels, Queueable;
 
     public $randomString;
 
@@ -31,5 +32,12 @@ class PusherPingTest implements ShouldBroadcast
     public function broadcastAs()
     {
         return 'my-event';
+    }
+
+    public function broadcastWith()
+    {
+        return [
+            'string' => $this->randomString,
+        ];
     }
 }
