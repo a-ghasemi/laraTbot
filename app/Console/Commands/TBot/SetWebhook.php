@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\TBot;
 
-use App\Events\PusherPingTest;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 
 class SetWebhook extends Command
 {
-    protected $signature = 'tbot:set_webhook';
+    protected $signature = 'tbot:webhook:set';
     protected $description = 'set webhook';
 
     public function handle(): int

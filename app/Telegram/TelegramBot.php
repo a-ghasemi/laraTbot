@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Log;
 use Telegram\Commands\Command;
 use Telegram\Core\TelegramObject;
 use Telegram\Customs\CustomResponse;
-use Telegram\Customs\CustomResponseArr;
 use Telegram\Handler\TelegramBotHandler;
 use Telegram\Objects\Update;
 use Telegram\Objects\UpdateArray;
@@ -19,18 +18,17 @@ use Telegram\Objects\User;
 class TelegramBot
 {
     protected $url;
-    protected $debug_url;
+    protected $debug_requests;
+    protected $debug_responses;
     public Command $commands;
     public string $chat_id;
 
 
-    /**
-     * @throws \Exception
-     */
     public function __construct()
     {
+        $this->debug_requests = config('tbot.debug.request');
+        $this->debug_responses = config('tbot.debug.response');
         $this->url = $this->makeUrl();
-        $this->debug_url = config('tbot.debug.url_call');
         $this->commands = new Command($this);
     }
 
@@ -47,7 +45,7 @@ class TelegramBot
 
     public function getUpdates(): UpdateArray
     {
-        $response = $this->callArray('getUpdates');
+        $response = $this->call('getUpdates');
         return UpdateArray::fromResponse($response);
     }
 
@@ -56,7 +54,7 @@ class TelegramBot
         $request_arr = $request->all();
         $this->chat_id = $request_arr['message']['chat']['id'];
 
-        if ($this->debug_url) {
+        if ($this->debug_responses) {
             ServerSentTelegramRequest::dispatch('::WEBHOOK::', $request);
         }
 
@@ -67,6 +65,12 @@ class TelegramBot
 
     private function makeUrl(): string
     {
+        if ($this->debug_requests) {
+            return route('v1.tbot.send.debug', [
+                'token'  => config('tbot.debug.token'),
+            ]).'/';
+        }
+
         if (config('tbot.telegram_api_path', '') == '') {
             throw new \Exception('<telegram API path> does not exists');
         }
@@ -81,23 +85,15 @@ class TelegramBot
     public function call($telegram_method_name, $params = [], $http_method = 'post'): CustomResponse
     {
         $url = $this->url . $telegram_method_name;
-        if ($this->debug_url) {
-            $url = route('v1.tbot.send.debug', [
-                'method' => $telegram_method_name,
-                'token'  => config('tbot.debug.token'),
-            ]);
+
+        if(config('tbot.debug.url')){
+            dd($url);
         }
+
         $response = Http::post($url, $params);
+        if($this->debug_responses) dd($response->json());
+
         return (new CustomResponse($response));
     }
 
-    private function callArray($telegram_method_name, $params = [], $http_method = 'post'): CustomResponse
-    {
-        $url = $this->url . $telegram_method_name;
-        if ($this->debug_url) {
-            return dd($url);
-        }
-        $response = Http::send($http_method, $url, $params);
-        return (new CustomResponse($response));
-    }
 }

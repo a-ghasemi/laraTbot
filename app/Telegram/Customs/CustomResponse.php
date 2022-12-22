@@ -10,36 +10,38 @@ class CustomResponse
     protected int $status;
     protected array $headers;
     protected bool $ok;
-    protected array $result;
+    protected array|null $result;
 
     # telegram error
-    protected string $description;
-    protected int $error_code;
+    protected string|null $description;
+    protected int|null $error_code;
 
     public function __construct(Response $response)
     {
-        $data = $response->json(true);
+        $data = $response->json();
 
-        Log::info('response',$data ?? []);
+        Log::info('response', $data ?? []);
         $this->status = $response->status();
         $this->headers = $response->headers();
         $this->ok = (($data['ok'] ?? 'false') == 'true');
 
-        if($this->status == 200){ // success request to telegram
-            if(!$this->ok){ // telegram error feedback
-                $this->description = $data['description'];
-                $this->error_code = $data['error_code'];
+        if ($this->status == 200) { // success request to telegram
+            if (!$this->ok) { // telegram error feedback
+                $this->description = isset($data) && isset($data['description']) ? $data['description'] : null;
+                $this->error_code = isset($data) && isset($data['error_code']) ? $data['error_code'] : null;
+            } else {
+                $this->result = $data['result'] ?: null;
             }
-        }
-        else
-        {
-            dd($data,$this->headers);
+        } else {
+            dd($data, $this->headers);
         }
     }
 
-    public function get(string $field)
+    public function get(string $field, string $type): mixed
     {
-        return $this->result[$field] ?? null;
+        $out = $this->result[$field] ?? null;
+        settype($out, $type);
+        return $out;
     }
 
     public function getResultArr()
@@ -60,14 +62,13 @@ class CustomResponse
 
         $classname = last(explode('\\', static::class));
         $return[] = $this->centerString($classname, $maxlen);
-        $return[] = $this->centerString(str_repeat('-',20), $maxlen);
+        $return[] = $this->centerString(str_repeat('-', 20), $maxlen);
 
-        try{
+        try {
             foreach ($properties as $property) {
                 $return[] = sprintf("%{$maxlen}s: %s", $property, $this->$property);
             }
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
             dd($e->getMessage(), $return, $property, $this->$property);
         }
 

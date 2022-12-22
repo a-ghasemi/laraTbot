@@ -4,21 +4,19 @@ namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Http\Request;
 use Illuminate\Queue\SerializesModels;
 
 class ServerSentTelegramRequest implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels, Queueable;
 
     public $request;
     public $method;
 
-    public function __construct(string $method,Request $request)
+    public function __construct(string $method, array $request)
     {
         $this->request = $request;
         $this->method = $method;
@@ -32,5 +30,13 @@ class ServerSentTelegramRequest implements ShouldBroadcast
     public function broadcastAs()
     {
         return 'my-event';
+    }
+
+    public function broadcastWith()
+    {
+        return [
+            'method' => $this->method,
+            'request' => $this->request,
+        ];
     }
 }
