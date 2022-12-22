@@ -3,6 +3,7 @@
 namespace Telegram;
 
 use App\Events\ServerSentTelegramRequest;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
@@ -65,12 +66,6 @@ class TelegramBot
 
     private function makeUrl(): string
     {
-        if ($this->debug_requests) {
-            return route('v1.tbot.send.debug', [
-                'token'  => config('tbot.debug.token'),
-            ]).'/';
-        }
-
         if (config('tbot.telegram_api_path', '') == '') {
             throw new \Exception('<telegram API path> does not exists');
         }
@@ -82,7 +77,7 @@ class TelegramBot
         return config('tbot.telegram_api_path') . config('tbot.token') . '/';
     }
 
-    public function call($telegram_method_name, $params = [], $http_method = 'post'): CustomResponse
+    public function call($telegram_method_name, $params = [], $http_method = 'post'): CustomResponse|RedirectResponse
     {
         $url = $this->url . $telegram_method_name;
 
@@ -90,7 +85,16 @@ class TelegramBot
             dd($url);
         }
 
-        $response = Http::post($url, $params);
+        $client = app('GuzzleClient')([
+                'base_uri'  => $url,
+                'timeout'   => 10,
+                'verify'    => true,
+            ]);
+
+        $response = ($this->debug_requests)?
+            $client->post($url, $params)
+            : Http::send($http_method, $url, $params);
+
         if($this->debug_responses) dd($response->json());
 
         return (new CustomResponse($response));
