@@ -24,30 +24,12 @@ class TelegramBot
     public Command $commands;
     public string $chat_id;
 
-
     public function __construct()
     {
         $this->debug_requests = config('tbot.debug.request');
         $this->debug_responses = config('tbot.debug.response');
         $this->url = $this->makeUrl();
         $this->commands = new Command($this);
-    }
-
-    public function getMe(): TelegramObject
-    {
-        $response = $this->call('getMe');
-        return User::fromResponse($response);
-    }
-
-    public function setWebhook(string $url): CustomResponse
-    {
-        return $this->call('setWebhook', ['url' => $url]);
-    }
-
-    public function getUpdates(): UpdateArray
-    {
-        $response = $this->call('getUpdates');
-        return UpdateArray::fromResponse($response);
     }
 
     public function handleWebhook(Request $request): Response
@@ -77,7 +59,7 @@ class TelegramBot
         return config('tbot.telegram_api_path') . config('tbot.token') . '/';
     }
 
-    public function call($telegram_method_name, $params = [], $http_method = 'post'): CustomResponse|RedirectResponse
+    public function call($telegram_method_name, $params = [], $http_method = 'post'): CustomResponse
     {
         $url = $this->url . $telegram_method_name;
 

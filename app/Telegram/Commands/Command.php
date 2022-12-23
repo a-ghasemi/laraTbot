@@ -2,6 +2,9 @@
 
 namespace Telegram\Commands;
 
+use Telegram\Core\TelegramObject;
+use Telegram\Objects\UpdateArray;
+use Telegram\Objects\User;
 use Telegram\TelegramBot;
 use Telegram\Customs\CustomResponse;
 
@@ -13,6 +16,24 @@ class Command
     {
         $this->bot = $bot;
     }
+
+    public function getMe(): TelegramObject
+    {
+        $response = $this->bot->call('getMe');
+        return User::fromResponse($response);
+    }
+
+    public function setWebhook(string $url): CustomResponse
+    {
+        return $this->bot->call('setWebhook', ['url' => $url]);
+    }
+
+    public function getUpdates(): UpdateArray
+    {
+        $response = $this->bot->call('getUpdates');
+        return UpdateArray::fromResponse($response);
+    }
+
 
     public function sendMessage(string $chat_id, string $text): CustomResponse
     {

@@ -16,7 +16,7 @@ class CallBotCommand extends _TBotCommand
         $params = (array) ($this->argument('method'));
         $method = array_shift($params);
 
-        $response = $this->tbot->$method(...$params);
+        $response = $this->tbot->commands->$method(...$params);
 
         $this->comment($response->toString());
 
