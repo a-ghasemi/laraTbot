@@ -33,6 +33,11 @@ class Command
         return $this->bot->call('deleteWebhook', ['drop_pending_updates' => $drop_pending_updates]);
     }
 
+    public function getWebhookInfo(): CustomResponse
+    {
+        return $this->bot->call('getWebhookInfo');
+    }
+
     public function getUpdates(): UpdateArray
     {
         $response = $this->bot->call('getUpdates');

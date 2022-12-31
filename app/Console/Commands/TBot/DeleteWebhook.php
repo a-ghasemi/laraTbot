@@ -19,9 +19,9 @@ class DeleteWebhook extends Command
         ]);
         $this->comment('Webhook URL: ' . $url);
 
-        Artisan::call("tbot:call deleteWebhook {$url}");
+        Artisan::call("tbot:call deleteWebhook");
 
-        $this->comment("Webhook deleted successfully!");
+        Artisan::call("tbot:call getWebhookInfo");
 
         return Command::SUCCESS;
     }
