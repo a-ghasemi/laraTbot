@@ -35,6 +35,7 @@ class TelegramBot
 
         if (config('tbot.debug.log.webhook')) {
             ServerSentTelegramRequest::dispatch('::WEBHOOK::', $request);
+            Log::info('webhook', $request_arr ?? []);
         }
 
         $handler = new TelegramBotHandler($this, $request);
@@ -52,6 +53,12 @@ class TelegramBot
             throw new \Exception('<telegram bot token> does not exists');
         }
 
+        if (config('tbot.debug.log.request')) {
+            return route('v1.tbot.send.debug', [
+                    'token'  => config('tbot.debug.token'),
+                ]).'/';
+        }
+
         return config('tbot.telegram_api_path') . config('tbot.token') . '/';
     }
 
@@ -63,15 +70,7 @@ class TelegramBot
             dd($url);
         }
 
-        $client = app('GuzzleClient')([
-                'base_uri'  => $url,
-                'timeout'   => 10,
-                'verify'    => true,
-            ]);
-
-        $response = (config('tbot.debug.log.request'))?
-            $client->post($url, $params)
-            : Http::send($http_method, $url, $params);
+        $response = Http::send($http_method, $url, $params);
 
         return (new CustomResponse($response));
     }

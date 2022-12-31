@@ -28,6 +28,11 @@ class Command
         return $this->bot->call('setWebhook', ['url' => $url]);
     }
 
+    public function deleteWebhook(bool $drop_pending_updates = true): CustomResponse
+    {
+        return $this->bot->call('deleteWebhook', ['drop_pending_updates' => $drop_pending_updates]);
+    }
+
     public function getUpdates(): UpdateArray
     {
         $response = $this->bot->call('getUpdates');

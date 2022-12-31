@@ -10,7 +10,7 @@ class CustomResponse
     protected int $status;
     protected array $headers;
     protected bool $ok;
-    protected array|null $result;
+    protected array|bool|null $result;
 
     # telegram error
     protected string|null $description;
@@ -20,7 +20,10 @@ class CustomResponse
     {
         $data = $response->json();
 
-        Log::info('response', $data ?? []);
+        if(config('tbot.debug.log.response')){
+            Log::info('response', $data ?? []);
+        }
+
         $this->status = $response->status();
         $this->headers = $response->headers();
         $this->ok = (($data['ok'] ?? 'false') == 'true');
@@ -37,8 +40,10 @@ class CustomResponse
         }
     }
 
-    public function get(string $field, string $type): mixed
+    public function get(string $field = null, string $type = 'string'): mixed
     {
+        if(!is_array($this->result)) return $this->result;
+
         $out = $this->result[$field] ?? null;
         settype($out, $type);
         return $out;

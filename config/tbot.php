@@ -7,11 +7,12 @@ return [
         'token' => env('TBOT_WEBHOOK_TOKEN', ''),
     ],
     'debug'             => [
-        'log' => [
+        'log'   => [
             'request'  => env('TBOT_LOG_REQUEST', false),
+            'response' => env('TBOT_LOG_RESPONSE', false),
             'webhook'  => env('TBOT_LOG_WEBHOOK', false),
         ],
-        'url'      => env('TBOT_DEBUG_URL', false),
-        'token'    => env('TBOT_WEBHOOK_TOKEN_DEBUG', ''),
+        'url'   => env('TBOT_DEBUG_URL', false),
+        'token' => env('TBOT_WEBHOOK_TOKEN_DEBUG', ''),
     ],
 ];
