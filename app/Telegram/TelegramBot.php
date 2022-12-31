@@ -19,15 +19,11 @@ use Telegram\Objects\User;
 class TelegramBot
 {
     protected $url;
-    protected $debug_requests;
-    protected $debug_responses;
     public Command $commands;
     public string $chat_id;
 
     public function __construct()
     {
-        $this->debug_requests = config('tbot.debug.request');
-        $this->debug_responses = config('tbot.debug.response');
         $this->url = $this->makeUrl();
         $this->commands = new Command($this);
     }
@@ -37,7 +33,7 @@ class TelegramBot
         $request_arr = $request->all();
         $this->chat_id = $request_arr['message']['chat']['id'];
 
-        if ($this->debug_responses) {
+        if (config('tbot.debug.log.webhook')) {
             ServerSentTelegramRequest::dispatch('::WEBHOOK::', $request);
         }
 
@@ -73,11 +69,9 @@ class TelegramBot
                 'verify'    => true,
             ]);
 
-        $response = ($this->debug_requests)?
+        $response = (config('tbot.debug.log.request'))?
             $client->post($url, $params)
             : Http::send($http_method, $url, $params);
-
-        if($this->debug_responses) dd($response->json());
 
         return (new CustomResponse($response));
     }
