@@ -9,16 +9,16 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ServerSentTelegramRequest implements ShouldBroadcast
+class ServerCommunicatedWithTelegram implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels, Queueable;
 
-    public $request;
     public $method;
+    public $data;
 
-    public function __construct(string $method, array $request)
+    public function __construct(string $method, array $data)
     {
-        $this->request = $request;
+        $this->data = $data;
         $this->method = $method;
     }
 
@@ -36,7 +36,7 @@ class ServerSentTelegramRequest implements ShouldBroadcast
     {
         return [
             'method' => $this->method,
-            'request' => $this->request,
+            'data' => $this->data,
         ];
     }
 }

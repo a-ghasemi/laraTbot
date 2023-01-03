@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Events\ServerSentTelegramRequest;
+use App\Events\ServerCommunicatedWithTelegram;
 use Illuminate\Support\ServiceProvider;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;

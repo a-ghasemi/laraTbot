@@ -2,7 +2,7 @@
 
 namespace Telegram;
 
-use App\Events\ServerSentTelegramRequest;
+use App\Events\ServerCommunicatedWithTelegram;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -35,7 +35,7 @@ class TelegramBot
 
         if (config('tbot.debug.log.webhook')) {
             Log::info('webhook', $request->all() ?? []);
-            ServerSentTelegramRequest::dispatch('::WEBHOOK::', $request->all());
+            ServerCommunicatedWithTelegram::dispatch('::WEBHOOK::', $request->all());
         }
 
         $handler = new TelegramBotHandler($this, $request);
@@ -74,7 +74,7 @@ class TelegramBot
                 'headers' => $req->headers(),
                 'data'    => $req->data(),
             ]);
-            ServerSentTelegramRequest::dispatch('::REQUEST::', [
+            ServerCommunicatedWithTelegram::dispatch('::REQUEST::', [
                 'method'  => $req->method(),
                 'data'    => $req->data(),
             ]);
