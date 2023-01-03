@@ -53,24 +53,29 @@ class TelegramBot
             throw new \Exception('<telegram bot token> does not exists');
         }
 
-        if (config('tbot.debug.log.request')) {
-            return route('v1.tbot.send.debug', [
-                    'token'  => config('tbot.debug.token'),
-                ]).'/';
-        }
-
         return config('tbot.telegram_api_path') . config('tbot.token') . '/';
     }
 
     public function call($telegram_method_name, $params = [], $http_method = 'post'): CustomResponse
     {
+        abort_if(!in_array($http_method, ['get', 'post']), 503);
+
         $url = $this->url . $telegram_method_name;
 
-        if(config('tbot.debug.url')){
+        if (config('tbot.debug.url')) {
             dd($url);
         }
 
-        $response = Http::send($http_method, $url, $params);
+        $response = Http::beforeSending(function ($req) use ($http_method, $params) {
+            if (config('tbot.debug.log.request') != true) return;
+            Log::debug('request', [
+                'method'  => $req->method(),
+                'url'     => $req->url(),
+                'headers' => $req->headers(),
+                'data'    => $req->data(),
+            ]);
+            ServerSentTelegramRequest::dispatch($http_method, $params);
+        })->$http_method($url, $params);
 
         return (new CustomResponse($response));
     }

@@ -19,8 +19,7 @@ class SetWebhook extends Command
         ]);
         $this->comment('Webhook URL: ' . $url);
 
-        Artisan::call("tbot:call setWebhook {$url}");
-        Artisan::call("tbot:call getWebhookInfo");
+        $this->call("tbot:call", ['method' => ["setWebhook", "$url"] ]);
 
         return Command::SUCCESS;
     }

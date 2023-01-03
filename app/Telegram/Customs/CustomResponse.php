@@ -19,7 +19,7 @@ class CustomResponse
     public function __construct(Response $response)
     {
         $data = $response->json();
-
+dd($data);
         if(config('tbot.debug.log.response')){
             Log::info('response', $data ?? []);
         }

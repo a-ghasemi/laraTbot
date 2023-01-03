@@ -5,6 +5,7 @@ namespace Telegram\Commands;
 use Telegram\Core\TelegramObject;
 use Telegram\Objects\UpdateArray;
 use Telegram\Objects\User;
+use Telegram\Objects\WebhookInfo;
 use Telegram\TelegramBot;
 use Telegram\Customs\CustomResponse;
 
@@ -33,9 +34,10 @@ class Command
         return $this->bot->call('deleteWebhook', ['drop_pending_updates' => $drop_pending_updates]);
     }
 
-    public function getWebhookInfo(): CustomResponse
+    public function getWebhookInfo(): TelegramObject
     {
-        return $this->bot->call('getWebhookInfo');
+        $response = $this->bot->call('getWebhookInfo');
+        return WebhookInfo::fromResponse($response);
     }
 
     public function getUpdates(): UpdateArray
@@ -57,6 +59,16 @@ class Command
     public function sendReply(string $text): CustomResponse
     {
         return $this->sendMessage($this->bot->chat_id, $text);
+    }
+
+    public static function callResponse(string $method, array $params = []):string
+    {
+        $tbot = new TelegramBot();
+
+        $response = $tbot->commands->$method(...$params);
+        $response = $response->toString();
+
+        return $response;
     }
 
 }

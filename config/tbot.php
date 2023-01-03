@@ -13,6 +13,5 @@ return [
             'webhook'  => env('TBOT_LOG_WEBHOOK', false),
         ],
         'url'   => env('TBOT_DEBUG_URL', false),
-        'token' => env('TBOT_WEBHOOK_TOKEN_DEBUG', ''),
     ],
 ];

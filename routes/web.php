@@ -10,7 +10,7 @@ Route::get('/',function (){
 Route::post('panel/{method?}',function (\Illuminate\Http\Request $request, $method = null){
     $tbot = new TelegramBot();
     $params = $request->get('params',[]);
-    $response = $tbot->$method(...$params);
+    $response = $tbot->commands->$method(...$params);
     return view('result',['result' => $response->toString()]);
 })->name('bot_method');
 

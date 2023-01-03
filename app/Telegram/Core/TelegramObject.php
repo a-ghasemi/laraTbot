@@ -90,10 +90,11 @@ abstract class TelegramObject
                 $out = doubleval($this->$property);
                 break;
             case 'array':
+                $out = [];
                 foreach ($this->$property as $item) {
                     $out[] = $this->getPropertyValue($item);
                 }
-                $out = implode('|', $out);
+                $out = $out? implode('|', $out): '[]';
                 break;
 
             default:
