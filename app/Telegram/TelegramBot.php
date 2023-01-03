@@ -74,7 +74,10 @@ class TelegramBot
                 'headers' => $req->headers(),
                 'data'    => $req->data(),
             ]);
-            ServerSentTelegramRequest::dispatch($http_method, $params);
+            ServerSentTelegramRequest::dispatch('::REQUEST::', [
+                'method'  => $req->method(),
+                'data'    => $req->data(),
+            ]);
         })->$http_method($url, $params);
 
         return (new CustomResponse($response));

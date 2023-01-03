@@ -2,6 +2,7 @@
 
 namespace Telegram\Customs;
 
+use App\Events\ServerSentTelegramRequest;
 use \Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Log;
 
@@ -22,6 +23,7 @@ class CustomResponse
 
         if(config('tbot.debug.log.response')){
             Log::info('response', $data ?? []);
+            ServerSentTelegramRequest::dispatch('::RESPONSE::', $data ?? []);
         }
 
         $this->status = $response->status();
