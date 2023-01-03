@@ -66,7 +66,7 @@ class TelegramBot
             dd($url);
         }
 
-        $response = Http::beforeSending(function ($req) use ($http_method, $params) {
+        $response = Http::beforeSending(function ($req) use ($telegram_method_name) {
             if (!config('tbot.debug.log.request')) return;
             Log::debug('request', [
                 'method'  => $req->method(),
@@ -75,8 +75,9 @@ class TelegramBot
                 'data'    => $req->data(),
             ]);
             ServerCommunicatedWithTelegram::dispatch('::REQUEST::', [
-                'method'  => $req->method(),
-                'data'    => $req->data(),
+                'http method'     => $req->method(),
+                'telegram method' => $telegram_method_name,
+                'data'            => $req->data(),
             ]);
         })->$http_method($url, $params);
 

@@ -13,13 +13,13 @@ class ServerCommunicatedWithTelegram implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels, Queueable;
 
-    public $method;
+    public $title;
     public $data;
 
-    public function __construct(string $method, array $data)
+    public function __construct(string $title, array $data)
     {
         $this->data = $data;
-        $this->method = $method;
+        $this->title = $title;
     }
 
     public function broadcastOn()
@@ -35,7 +35,7 @@ class ServerCommunicatedWithTelegram implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'method' => $this->method,
+            'title' => $this->title,
             'data' => $this->data,
         ];
     }
