@@ -34,8 +34,8 @@ class TelegramBot
         $this->chat_id = $request_arr['message']['chat']['id'];
 
         if (config('tbot.debug.log.webhook')) {
-            ServerSentTelegramRequest::dispatch('::WEBHOOK::', $request);
-            Log::info('webhook', $request_arr ?? []);
+            Log::info('webhook', $request->all() ?? []);
+            ServerSentTelegramRequest::dispatch('::WEBHOOK::', $request->all());
         }
 
         $handler = new TelegramBotHandler($this, $request);
@@ -67,7 +67,7 @@ class TelegramBot
         }
 
         $response = Http::beforeSending(function ($req) use ($http_method, $params) {
-            if (config('tbot.debug.log.request') != true) return;
+            if (!config('tbot.debug.log.request')) return;
             Log::debug('request', [
                 'method'  => $req->method(),
                 'url'     => $req->url(),

@@ -15,6 +15,10 @@ Route::group([
         return "PONG!";
     })->name('test.ping');
 
+    Route::post('testP', function (Request $request){
+        return response(implode('|',$request->all()),201);
+    })->name('test.post');
+
     Route::post('webhook/{token}', "\App\Http\Controllers\Api\V1\Webhook@index")->name('tbot.webhook');
 });
 

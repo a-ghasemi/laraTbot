@@ -3,6 +3,7 @@ namespace Telegram\Handler;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Telegram\TelegramBot;
 
 class TelegramBotHandler
@@ -19,7 +20,7 @@ class TelegramBotHandler
 
     public function run(): void
     {
-        $this->bot->commands->sendReply('Hello!');
+        $this->bot->commands->sendReply('Hello dear starter!');
         $this->response = response('done',200);
     }
 
