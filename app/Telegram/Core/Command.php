@@ -2,7 +2,6 @@
 
 namespace App\Telegram\Core;
 
-use Illuminate\Support\Str;
 use Telegram\Commands\InfoCommands;
 use Telegram\Commands\MessageCommands;
 use Telegram\Commands\UpdatesCommands;

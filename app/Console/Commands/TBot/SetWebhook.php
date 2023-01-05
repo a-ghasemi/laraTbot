@@ -3,7 +3,6 @@
 namespace App\Console\Commands\TBot;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
 
 class SetWebhook extends Command
 {
