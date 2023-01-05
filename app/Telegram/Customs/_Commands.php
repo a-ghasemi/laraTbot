@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Telegram\Commands;
+namespace Telegram\Customs;
 
 use Telegram\TelegramBot;
 
-abstract class Commands
+abstract class _Commands
 {
     protected TelegramBot $bot;
 

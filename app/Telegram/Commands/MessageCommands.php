@@ -2,10 +2,10 @@
 
 namespace Telegram\Commands;
 
-use App\Telegram\Commands\Commands;
+use Telegram\Customs\_Commands;
 use Telegram\Customs\CustomResponse;
 
-class MessageCommands extends Commands
+class MessageCommands extends _Commands
 {
     public function sendMessage(string $chat_id, string $text): CustomResponse
     {

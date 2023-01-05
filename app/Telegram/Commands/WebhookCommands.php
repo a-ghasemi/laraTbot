@@ -2,12 +2,12 @@
 
 namespace Telegram\Commands;
 
-use App\Telegram\Commands\Commands;
 use Telegram\Core\TelegramObject;
+use Telegram\Customs\_Commands;
 use Telegram\Customs\CustomResponse;
 use Telegram\Objects\WebhookInfo;
 
-class WebhookCommands extends Commands
+class WebhookCommands extends _Commands
 {
     public function setWebhook(string $url): CustomResponse
     {

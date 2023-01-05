@@ -2,10 +2,10 @@
 
 namespace Telegram\Commands;
 
-use App\Telegram\Commands\Commands;
+use Telegram\Customs\_Commands;
 use Telegram\Objects\UpdateArray;
 
-class UpdatesCommands extends Commands
+class UpdatesCommands extends _Commands
 {
     public function getUpdates(): UpdateArray
     {
