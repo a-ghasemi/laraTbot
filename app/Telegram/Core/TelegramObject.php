@@ -16,16 +16,10 @@ abstract class TelegramObject
 
         $obj = new $class_name();
         foreach (get_class_vars(static::class) as $property => $value) {
-            $obj->$property = $response->get($property, self::getPropertyType(static::class, $property));
+            $obj->$property = $response->get($property, $obj->getPropertyType(static::class, $property));
         }
 
         return $obj;
-    }
-
-    static private function getPropertyType($class_name, $property_name): string
-    {
-        $rp = new \ReflectionProperty($class_name, $property_name);
-        return $rp->getType()->getName();
     }
 
     /*
@@ -57,7 +51,7 @@ abstract class TelegramObject
      * Makes a pretty view of Object in the response of string request
      * e.g. in the logs
      */
-    public function toString(): string
+    public function toString(array $skips = []): string
     {
         $return = [];
 
@@ -69,15 +63,37 @@ abstract class TelegramObject
         $return[] = $this->centerString(str_repeat('-', 20), $maxlen);
 
         foreach ($properties as $property) {
-            $return[] = sprintf("%{$maxlen}s: %s", $property, $this->getPropertyValue($property));
+            if(in_array($property, $skips))continue;
+            $value = $this->getPropertyValue($property);
+            if($value == '<empty>')continue;
+            $return[] = sprintf("%{$maxlen}s: %s", $property, $value);
         }
         return implode("\n", $return);
     }
 
+    private function getPropertyType($class_name, $property_name): string
+    {
+        $rp = new \ReflectionProperty($class_name, $property_name);
+        $type = $rp->getType();
+
+        if(in_array('getName',get_class_methods(get_class($type)))){
+            return $type->getName();
+        }
+
+        return gettype($this->$property_name);
+    }
+
     private function getPropertyValue(string $property): string
     {
-        switch (self::getPropertyType(static::class, $property)) {
+        $out = '<empty>';
+
+        if(!isset($this->$property)){
+            return $out;
+        }
+
+        switch ($this->getPropertyType(static::class, $property)) {
             case 'bool':
+            case 'boolean':
                 $out = $this->$property ? 'true' : 'false';
                 break;
             case 'string':
@@ -92,7 +108,7 @@ abstract class TelegramObject
             case 'array':
                 $out = [];
                 foreach ($this->$property as $item) {
-                    $out[] = $this->getPropertyValue($item);
+                    $out[] = var_export($item,true);
                 }
                 $out = $out? implode('|', $out): '[]';
                 break;
