@@ -34,8 +34,7 @@ class TelegramBot
         }
 
         $handler = new TelegramBotHandler($this, $request);
-        $handler->run();
-        return $handler->getResponse();
+        return $handler->run()->getResponse();
     }
 
     private function makeUrl(): string

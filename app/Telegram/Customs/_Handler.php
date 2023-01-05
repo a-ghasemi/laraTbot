@@ -18,7 +18,7 @@ abstract class _Handler
         $this->request = $request;
     }
 
-    abstract public function run(): void;
+    abstract public function run(): static;
 
     public function getResponse(): Response
     {
