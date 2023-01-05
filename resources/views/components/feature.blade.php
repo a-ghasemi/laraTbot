@@ -11,6 +11,7 @@
         <p>
             <form action="{{ route('bot_method',['method' => $method ?? $title]) }}" method="post">
                 @csrf
+                <input type="hidden" name="params[]" value="{{ $params ?? '' }}">
                 <button type="submit">execute >></button>
             </form>
         </p>

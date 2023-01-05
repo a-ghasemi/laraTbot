@@ -4,10 +4,16 @@ use Illuminate\Support\Facades\Route;
 use Telegram\TelegramBot;
 
 Route::get('/',function (){
-    return view('panel');
+    $url = route('v1.tbot.webhook', [
+        'token' => config('tbot.webhook.token'),
+    ]);
+
+    return view('panel')->with([
+        'webhook_url' => $url,
+    ]);
 })->name('panel');
 
-Route::get('panel/{method?}',function (\Illuminate\Http\Request $request, $method = null){
+Route::post('panel/{method?}',function (\Illuminate\Http\Request $request, $method = null){
     $tbot = new TelegramBot();
     $params = $request->get('params',[]);
     $response = $tbot->commands->$method(...$params);

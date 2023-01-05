@@ -9,8 +9,8 @@
     <x-feature title="Get Webhook" method="getWebhookInfo">
         gets webhook settings
     </x-feature>
-    <x-feature title="Set Webhook" method="setWebhook">
-        sets webhook url
+    <x-feature title="Set Webhook" method="setWebhook" params="{{ $webhook_url }}">
+        sets webhook url to {{ $webhook_url }}
     </x-feature>
     <x-feature title="Delete Webhook" method="deleteWebhook">
         deletes webhook settings
