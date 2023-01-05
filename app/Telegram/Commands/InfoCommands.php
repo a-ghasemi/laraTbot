@@ -2,11 +2,11 @@
 
 namespace Telegram\Commands;
 
-use App\Telegram\Commands\ACommands;
+use App\Telegram\Commands\Commands;
 use Telegram\Core\TelegramObject;
 use Telegram\Objects\User;
 
-class InfoCommands extends ACommands
+class InfoCommands extends Commands
 {
     public function getMe(): TelegramObject
     {

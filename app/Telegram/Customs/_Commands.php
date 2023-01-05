@@ -4,7 +4,7 @@ namespace App\Telegram\Commands;
 
 use Telegram\TelegramBot;
 
-abstract class ACommands
+abstract class Commands
 {
     protected TelegramBot $bot;
 
