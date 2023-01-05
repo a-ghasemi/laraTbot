@@ -9,4 +9,10 @@
     <x-feature title="Get Webhook" method="getWebhookInfo">
         gets webhook settings
     </x-feature>
+    <x-feature title="Set Webhook" method="setWebhook">
+        sets webhook url
+    </x-feature>
+    <x-feature title="Delete Webhook" method="deleteWebhook">
+        deletes webhook settings
+    </x-feature>
 @endsection

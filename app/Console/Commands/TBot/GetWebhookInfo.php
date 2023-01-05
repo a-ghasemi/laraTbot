@@ -3,9 +3,6 @@
 namespace App\Console\Commands\TBot;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
-use Telegram\Commands\Command as TelegramCommand;
-use Telegram\TelegramBot;
 
 class GetWebhookInfo extends Command
 {

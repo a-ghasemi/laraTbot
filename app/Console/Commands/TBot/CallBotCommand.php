@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands\TBot;
 
+use App\Telegram\Core\Command as TelegramCommand;
 use Illuminate\Console\Command;
-use \Telegram\Commands\Command as TelegramCommand;
 
 class CallBotCommand extends Command
 {

@@ -3,18 +3,13 @@
 namespace Telegram;
 
 use App\Events\ServerCommunicatedWithTelegram;
-use Illuminate\Http\RedirectResponse;
+use App\Telegram\Core\Command;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Telegram\Commands\Command;
-use Telegram\Core\TelegramObject;
 use Telegram\Customs\CustomResponse;
 use Telegram\Handler\TelegramBotHandler;
-use Telegram\Objects\Update;
-use Telegram\Objects\UpdateArray;
-use Telegram\Objects\User;
 
 class TelegramBot
 {
@@ -82,6 +77,11 @@ class TelegramBot
         })->$http_method($url, $params);
 
         return (new CustomResponse($response));
+    }
+
+    public function __call(string $name, array $arguments)
+    {
+        return $this->commands->$name(...$arguments);
     }
 
 }
