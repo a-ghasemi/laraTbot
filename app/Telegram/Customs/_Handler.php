@@ -10,7 +10,7 @@ abstract class _Handler
 {
     protected TelegramBot $bot;
     protected Request $request;
-    private Response $response;
+    protected Response $response;
 
     public function __construct(TelegramBot $bot, Request $request)
     {
